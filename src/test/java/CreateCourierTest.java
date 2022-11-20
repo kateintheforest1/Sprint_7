@@ -17,7 +17,6 @@ public class CreateCourierTest {
         RestAssured.baseURI = "http://qa-scooter.praktikum-services.ru";
     }
 
-
     @Test
     public void createNewCourier() {
         File json = new File("src/test/resources/newCourier.json");
