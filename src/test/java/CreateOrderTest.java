@@ -5,7 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import com.google.gson.Gson;
-
+import io.qameta.allure.junit4.DisplayName;
 import static io.restassured.RestAssured.given;
 
 @RunWith(Parameterized.class)
@@ -46,6 +46,7 @@ public class CreateOrderTest {
     }
 
     @Test
+    @DisplayName("Check order creating")
     public void createOrder() {
         Response createOrderResponse =
                 given()

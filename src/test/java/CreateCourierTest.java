@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
-
+import io.qameta.allure.junit4.DisplayName;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
@@ -15,11 +15,15 @@ public class CreateCourierTest {
     @Before
     public void setUp() {
         RestAssured.baseURI = "http://qa-scooter.praktikum-services.ru";
+        File json = new File("src/test/resources/newCourier.json");
+        deleteCourier(json);
     }
 
     @Test
-    public void createNewCourier() {
+    @DisplayName("Check courier creating")
+    public void createNewCourierTest() {
         File json = new File("src/test/resources/newCourier.json");
+
         Response response = given().header("Content-type", "application/json").and().body(json).when().post("/api/v1/courier");
         response.then().statusCode(201).and().extract().path("ok");
 
@@ -27,7 +31,8 @@ public class CreateCourierTest {
     }
 
     @Test
-    public void createTheSameCourier() {
+    @DisplayName("Check twice creating the same courier")
+    public void createTheSameCourierTest() {
         File json = new File("src/test/resources/newCourier.json");
         Response response1 = given().header("Content-type", "application/json").and().body(json).when().post("/api/v1/courier");
         response1.then().statusCode(201).and().extract().path("ok");
@@ -40,7 +45,8 @@ public class CreateCourierTest {
     }
 
     @Test
-    public void createCourierWithoutLogin() {
+    @DisplayName("Check creating courier without login")
+    public void createCourierWithoutLoginTest() {
         File json = new File("src/test/resources/withoutLoginCourier.json");
         Response response3 = given().header("Content-type", "application/json")
                 //.auth().oauth2("подставь_сюда_свой_токен")
@@ -51,7 +57,8 @@ public class CreateCourierTest {
     }
 
     @Test
-    public void createCourierWithoutPassword() {
+    @DisplayName("Check creating courier without password")
+    public void createCourierWithoutPasswordTest() {
         File json = new File("src/test/resources/withoutPasswordCourier.json");
         Response response4 = given().header("Content-type", "application/json")
                 //.auth().oauth2("подставь_сюда_свой_токен")
@@ -62,7 +69,8 @@ public class CreateCourierTest {
 
 
     @Test
-   public void createCourierWithoutName() {
+    @DisplayName("Check creating courier without name")
+   public void createCourierWithoutNameTest() {
         File json = new File("src/test/resources/withoutNameCourier.json");
         Response response5 = given().header("Content-type", "application/json")
                 //.auth().oauth2("подставь_сюда_свой_токен")

@@ -4,7 +4,7 @@ import io.restassured.response.Response;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
+import io.qameta.allure.junit4.DisplayName;
 import java.io.File;
 
 import static io.restassured.RestAssured.given;
@@ -25,7 +25,8 @@ public class LoginTest {
 
 
         @Test
-        public void loginCourier() {
+        @DisplayName("Check login by courier")
+        public void loginCourierTest() {
             createNewCourier();
             File json = new File("src/test/resources/loginCourier.json");
             Response response1 =
@@ -41,7 +42,8 @@ public class LoginTest {
         }
 
     @Test
-    public void loginCourierWithoutLogin() {
+    @DisplayName("Check login by courier without entering login")
+    public void loginCourierWithoutLoginTest() {
         createNewCourier();
         File json = new File("src/test/resources/withoutLoginCourier.json");
         Response response1 =
@@ -57,7 +59,8 @@ public class LoginTest {
     }
 
     @Test
-    public void loginCourierWithoutPassword() {
+    @DisplayName("Check login by courier without entering password")
+    public void loginCourierWithoutPasswordTest() {
         createNewCourier();
         File json = new File("src/test/resources/onlyLoginCourier.json");
         Response response1 =
@@ -73,7 +76,8 @@ public class LoginTest {
     }
 
     @Test
-    public void loginCourierNotCorrect() {
+    @DisplayName("Check login by courier with incorrect login")
+    public void loginCourierNotCorrectTest() {
         createNewCourier();
         File json = new File("src/test/resources/loginNotCorrectCourier.json");
         Response response1 =
@@ -90,7 +94,8 @@ public class LoginTest {
 
 
     @Test
-    public void loginCourierNotCorrectPassword() {
+    @DisplayName("Check login by courier with incorrect password")
+    public void loginCourierNotCorrectPasswordTest() {
         createNewCourier();
         File json = new File("src/test/resources/loginNotCorrectPassword.json");
         Response response1 =
