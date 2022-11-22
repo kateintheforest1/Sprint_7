@@ -23,6 +23,11 @@ public class LoginTest {
         Response response = given().header("Content-type", "application/json").and().body(json).when().post("/api/v1/courier");
     }
 
+    @After
+    public void cleanUp() {
+        deleteCourier(new File("src/test/resources/newCourier.json"));
+    }
+
 
         @Test
         @DisplayName("Check login by courier")
@@ -38,7 +43,7 @@ public class LoginTest {
                             .post("/api/v1/courier/login");
             response1.then().assertThat().statusCode(200).and().body("id", notNullValue());
 
-            deleteCourier(json);
+            //deleteCourier(json);
         }
 
     @Test
@@ -55,7 +60,7 @@ public class LoginTest {
                         .post("/api/v1/courier/login");
         response1.then().assertThat().statusCode(400).and().body("message", equalTo("Недостаточно данных для входа"));
 
-        deleteCourier(json);
+        //deleteCourier(json);
     }
 
     @Test
@@ -72,7 +77,7 @@ public class LoginTest {
                         .post("/api/v1/courier/login");
         response1.then().assertThat().statusCode(400).and().body("message", equalTo("Недостаточно данных для входа"));
 
-        deleteCourier(json);
+        //deleteCourier(json);
     }
 
     @Test
@@ -89,7 +94,7 @@ public class LoginTest {
                         .post("/api/v1/courier/login");
         response1.then().assertThat().statusCode(404).and().body("message", equalTo("Учетная запись не найдена"));
 
-        deleteCourier(json);
+        //deleteCourier(json);
     }
 
 
@@ -107,8 +112,9 @@ public class LoginTest {
                         .post("/api/v1/courier/login");
         response1.then().assertThat().statusCode(404).and().body("message", equalTo("Учетная запись не найдена"));
 
-        deleteCourier(json);
+        //deleteCourier(json);
     }
+
     public void deleteCourier(File courierJson) {
         Response response0 =
                 given()

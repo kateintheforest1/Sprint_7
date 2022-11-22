@@ -19,6 +19,15 @@ public class CreateCourierTest {
         deleteCourier(json);
     }
 
+    @After
+    public void cleanUp() {
+        deleteCourier(new File("src/test/resources/newCourier.json"));
+        deleteCourier(new File("src/test/resources/withoutNameCourier.json"));
+
+    }
+
+
+
     @Test
     @DisplayName("Check courier creating")
     public void createNewCourierTest() {
@@ -27,7 +36,6 @@ public class CreateCourierTest {
         Response response = given().header("Content-type", "application/json").and().body(json).when().post("/api/v1/courier");
         response.then().statusCode(201).and().extract().path("ok");
 
-        deleteCourier(json);
     }
 
     @Test
@@ -41,7 +49,6 @@ public class CreateCourierTest {
                 .and().body(json).when().post("/api/v1/courier");
         response2.then().assertThat().statusCode(409).and().body("message", equalTo("Этот логин уже используется. Попробуйте другой."));
 
-        deleteCourier(json);
     }
 
     @Test
@@ -78,7 +85,6 @@ public class CreateCourierTest {
 
         System.out.println(response5.body().asString());
         response5.then().statusCode(201).and().extract().path("ok");
-        deleteCourier(json);
     }
 
     public void deleteCourier(File courierJson) {
