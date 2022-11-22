@@ -9,6 +9,7 @@ import java.io.File;
 import io.qameta.allure.junit4.DisplayName;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
+import static org.apache.http.HttpStatus.*;
 
 public class CreateCourierTest {
 
@@ -34,7 +35,7 @@ public class CreateCourierTest {
         File json = new File("src/test/resources/newCourier.json");
 
         Response response = given().header("Content-type", "application/json").and().body(json).when().post("/api/v1/courier");
-        response.then().statusCode(201).and().extract().path("ok");
+        response.then().statusCode(201).and().statusCode(SC_CREATED);
 
     }
 
@@ -43,7 +44,7 @@ public class CreateCourierTest {
     public void createTheSameCourierTest() {
         File json = new File("src/test/resources/newCourier.json");
         Response response1 = given().header("Content-type", "application/json").and().body(json).when().post("/api/v1/courier");
-        response1.then().statusCode(201).and().extract().path("ok");
+        response1.then().statusCode(201).and().statusCode(SC_CREATED);
 
         Response response2 = given().header("Content-type", "application/json")
                 .and().body(json).when().post("/api/v1/courier");
@@ -84,7 +85,7 @@ public class CreateCourierTest {
                 .and().body(json).when().post("/api/v1/courier");
 
         System.out.println(response5.body().asString());
-        response5.then().statusCode(201).and().extract().path("ok");
+        response5.then().statusCode(201).and().statusCode(SC_CREATED);
     }
 
     public void deleteCourier(File courierJson) {
