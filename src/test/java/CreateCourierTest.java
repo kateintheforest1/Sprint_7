@@ -16,95 +16,74 @@ public class CreateCourierTest {
     @Before
     public void setUp() {
         RestAssured.baseURI = "http://qa-scooter.praktikum-services.ru";
-        File json = new File("src/test/resources/newCourier.json");
-        deleteCourier(json);
+        CourierApi api = new CourierApi();
+        api.delete(new File("src/test/resources/newCourier.json"));
     }
 
     @After
     public void cleanUp() {
-        deleteCourier(new File("src/test/resources/newCourier.json"));
-        deleteCourier(new File("src/test/resources/withoutNameCourier.json"));
+        CourierApi api = new CourierApi();
 
+        api.delete(new File("src/test/resources/newCourier.json"));
+        api.delete(new File("src/test/resources/withoutNameCourier.json"));
     }
-
-
 
     @Test
     @DisplayName("Check courier creating")
     public void createNewCourierTest() {
-        File json = new File("src/test/resources/newCourier.json");
+        CourierApi api = new CourierApi();
 
-        Response response = given().header("Content-type", "application/json").and().body(json).when().post("/api/v1/courier");
+        Response response = api.create(new File("src/test/resources/newCourier.json"));
+
         response.then().statusCode(201).and().statusCode(SC_CREATED);
-
     }
+
 
     @Test
     @DisplayName("Check twice creating the same courier")
     public void createTheSameCourierTest() {
+        CourierApi api = new CourierApi();
+
         File json = new File("src/test/resources/newCourier.json");
-        Response response1 = given().header("Content-type", "application/json").and().body(json).when().post("/api/v1/courier");
-        response1.then().statusCode(201).and().statusCode(SC_CREATED);
 
-        Response response2 = given().header("Content-type", "application/json")
-                .and().body(json).when().post("/api/v1/courier");
-        response2.then().assertThat().statusCode(409).and().body("message", equalTo("Этот логин уже используется. Попробуйте другой."));
-
+        api.create(json).then().statusCode(201).and().statusCode(SC_CREATED);
+        api.create(json).then().assertThat().statusCode(409).and().body("message", equalTo("Этот логин уже используется. Попробуйте другой."));
     }
 
     @Test
     @DisplayName("Check creating courier without login")
     public void createCourierWithoutLoginTest() {
-        File json = new File("src/test/resources/withoutLoginCourier.json");
-        Response response3 = given().header("Content-type", "application/json")
-                //.auth().oauth2("подставь_сюда_свой_токен")
-                .and().body(json).when().post("/api/v1/courier");
+        CourierApi api = new CourierApi();
 
-        response3.then().assertThat().statusCode(400).and().body("message", equalTo("Недостаточно данных для создания учетной записи"));
-
+        api.create(new File("src/test/resources/withoutLoginCourier.json"))
+                .then()
+                .assertThat()
+                .statusCode(400)
+                .and()
+                .body("message", equalTo("Недостаточно данных для создания учетной записи"));
     }
 
     @Test
     @DisplayName("Check creating courier without password")
     public void createCourierWithoutPasswordTest() {
         File json = new File("src/test/resources/withoutPasswordCourier.json");
-        Response response4 = given().header("Content-type", "application/json")
-                //.auth().oauth2("подставь_сюда_свой_токен")
-                .and().body(json).when().post("/api/v1/courier");
-        response4.then().assertThat().statusCode(400).and().body("message", equalTo("Недостаточно данных для создания учетной записи"));
+        CourierApi api = new CourierApi();
 
+        api.create(json)
+                .then()
+                .assertThat()
+                .statusCode(400)
+                .and()
+                .body("message", equalTo("Недостаточно данных для создания учетной записи"));
     }
 
 
     @Test
     @DisplayName("Check creating courier without name")
-   public void createCourierWithoutNameTest() {
+    public void createCourierWithoutNameTest() {
         File json = new File("src/test/resources/withoutNameCourier.json");
-        Response response5 = given().header("Content-type", "application/json")
-                //.auth().oauth2("подставь_сюда_свой_токен")
-                .and().body(json).when().post("/api/v1/courier");
+        CourierApi api = new CourierApi();
 
-        System.out.println(response5.body().asString());
-        response5.then().statusCode(201).and().statusCode(SC_CREATED);
+        api.create(json).then().statusCode(201).and().statusCode(SC_CREATED);
     }
-
-    public void deleteCourier(File courierJson) {
-        Response response0 =
-                given()
-                        .header("Content-type", "application/json")
-                        .and()
-                        .body(courierJson)
-                        .when()
-                        .post("/api/v1/courier/login");
-
-        JsonPath jsonBody = response0.body().jsonPath();
-
-        if(response0.statusCode() == 200) {
-            String courierId = jsonBody.getString("id");
-            //Response deleteResponse =
-                    given()
-                    .delete("/api/v1/courier/" + courierId);
-        }
-    }
-
 }
