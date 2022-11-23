@@ -15,4 +15,9 @@ public class OrderApi {
                 .when()
                 .post("/api/v1/orders");
     }
+
+    public Response getList() {
+        return given()
+                .get("/api/v1/orders");
+    }
 }
