@@ -1,12 +1,10 @@
 import io.restassured.RestAssured;
-import io.restassured.response.Response;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import com.google.gson.Gson;
 import io.qameta.allure.junit4.DisplayName;
-import static io.restassured.RestAssured.given;
 
 @RunWith(Parameterized.class)
 public class CreateOrderTest {
@@ -34,7 +32,7 @@ public class CreateOrderTest {
                 gson.toJson(new Order(blackColor))
             },
             {
-                    gson.toJson(new Order(greyColor))
+                gson.toJson(new Order(greyColor))
             },
             {
                 gson.toJson(new Order(bothColors))
@@ -48,14 +46,8 @@ public class CreateOrderTest {
     @Test
     @DisplayName("Check order creating")
     public void createOrder() {
-        Response createOrderResponse =
-                given()
-                    .header("Content-type", "application/json")
-                    .and()
-                    .body(this.orderDataJson)
-                    .when()
-                    .post("/api/v1/orders");
+        OrderApi api = new OrderApi();
 
-        createOrderResponse.then().statusCode(201).and().extract().path("track");
+        api.create(this.orderDataJson).then().statusCode(201).and().extract().path("track");
     }
 }
