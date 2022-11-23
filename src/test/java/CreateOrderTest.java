@@ -5,6 +5,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import com.google.gson.Gson;
 import io.qameta.allure.junit4.DisplayName;
+import static org.apache.http.HttpStatus.*;
 
 @RunWith(Parameterized.class)
 public class CreateOrderTest {
@@ -48,6 +49,6 @@ public class CreateOrderTest {
     public void createOrder() {
         OrderApi api = new OrderApi();
 
-        api.create(this.orderDataJson).then().statusCode(201).and().extract().path("track");
+        api.create(this.orderDataJson).then().statusCode(SC_CREATED).and().extract().path("track");
     }
 }

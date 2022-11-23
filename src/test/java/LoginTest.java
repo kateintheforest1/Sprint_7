@@ -1,12 +1,10 @@
 import io.restassured.RestAssured;
-import io.restassured.response.Response;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import io.qameta.allure.junit4.DisplayName;
 import java.io.File;
-
-import static io.restassured.RestAssured.given;
+import static org.apache.http.HttpStatus.*;
 import static org.hamcrest.Matchers.*;
 
 public class LoginTest {
@@ -24,7 +22,6 @@ public class LoginTest {
     public void createNewCourier() {
         File json = new File("src/test/resources/newCourier.json");
         courierApi.create(json);
-        Response response = given().header("Content-type", "application/json").and().body(json).when().post("/api/v1/courier");
     }
 
     @After
@@ -43,7 +40,7 @@ public class LoginTest {
                 .login(json)
                 .then()
                 .assertThat()
-                .statusCode(200)
+                .statusCode(SC_OK)
                 .and()
                 .body("id", notNullValue());
     }
@@ -54,7 +51,7 @@ public class LoginTest {
         createNewCourier();
 
         File json = new File("src/test/resources/withoutLoginCourier.json");
-        courierApi.login(json).then().assertThat().statusCode(400).and().body("message", equalTo("Недостаточно данных для входа"));
+        courierApi.login(json).then().assertThat().statusCode(SC_BAD_REQUEST).and().body("message", equalTo("Недостаточно данных для входа"));
     }
 
     @Test
@@ -62,7 +59,7 @@ public class LoginTest {
     public void loginCourierWithoutPasswordTest() {
         createNewCourier();
         File json = new File("src/test/resources/onlyLoginCourier.json");
-        courierApi.login(json).then().assertThat().statusCode(400).and().body("message", equalTo("Недостаточно данных для входа"));
+        courierApi.login(json).then().assertThat().statusCode(SC_BAD_REQUEST).and().body("message", equalTo("Недостаточно данных для входа"));
     }
 
     @Test
@@ -71,7 +68,7 @@ public class LoginTest {
         createNewCourier();
 
         File json = new File("src/test/resources/loginNotCorrectCourier.json");
-        courierApi.login(json).then().assertThat().statusCode(404).and().body("message", equalTo("Учетная запись не найдена"));
+        courierApi.login(json).then().assertThat().statusCode(SC_NOT_FOUND).and().body("message", equalTo("Учетная запись не найдена"));
     }
 
     @Test
@@ -79,7 +76,7 @@ public class LoginTest {
     public void loginCourierNotCorrectPasswordTest() {
         createNewCourier();
         File json = new File("src/test/resources/loginNotCorrectPassword.json");
-        courierApi.login(json).then().assertThat().statusCode(404).and().body("message", equalTo("Учетная запись не найдена"));
+        courierApi.login(json).then().assertThat().statusCode(SC_NOT_FOUND).and().body("message", equalTo("Учетная запись не найдена"));
     }
 }
 

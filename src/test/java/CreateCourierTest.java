@@ -31,8 +31,6 @@ public class CreateCourierTest {
     public void createNewCourierTest() {
         courierApi.create(new File("src/test/resources/newCourier.json"))
                 .then()
-                .statusCode(201)
-                .and()
                 .statusCode(SC_CREATED);
     }
 
@@ -42,8 +40,8 @@ public class CreateCourierTest {
     public void createTheSameCourierTest() {
         File json = new File("src/test/resources/newCourier.json");
 
-        courierApi.create(json).then().statusCode(201).and().statusCode(SC_CREATED);
-        courierApi.create(json).then().assertThat().statusCode(409).and().body("message", equalTo("Этот логин уже используется. Попробуйте другой."));
+        courierApi.create(json).then().statusCode(SC_CREATED);
+        courierApi.create(json).then().assertThat().statusCode(SC_CONFLICT).and().body("message", equalTo("Этот логин уже используется. Попробуйте другой."));
     }
 
     @Test
@@ -52,7 +50,7 @@ public class CreateCourierTest {
         courierApi.create(new File("src/test/resources/withoutLoginCourier.json"))
                 .then()
                 .assertThat()
-                .statusCode(400)
+                .statusCode(SC_BAD_REQUEST)
                 .and()
                 .body("message", equalTo("Недостаточно данных для создания учетной записи"));
     }
@@ -65,7 +63,7 @@ public class CreateCourierTest {
         courierApi.create(json)
                 .then()
                 .assertThat()
-                .statusCode(400)
+                .statusCode(SC_BAD_REQUEST)
                 .and()
                 .body("message", equalTo("Недостаточно данных для создания учетной записи"));
     }
@@ -76,6 +74,6 @@ public class CreateCourierTest {
     public void createCourierWithoutNameTest() {
         File json = new File("src/test/resources/withoutNameCourier.json");
 
-        courierApi.create(json).then().statusCode(201).and().statusCode(SC_CREATED);
+        courierApi.create(json).then().statusCode(SC_CREATED);
     }
 }

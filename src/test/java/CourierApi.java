@@ -1,6 +1,7 @@
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import static org.apache.http.HttpStatus.*;
 
 import java.io.File;
 
@@ -28,7 +29,7 @@ public class CourierApi {
 
         JsonPath jsonBody = response0.body().jsonPath();
 
-        if(response0.statusCode() == 200) {
+        if(response0.statusCode() == SC_OK) {
             String courierId = jsonBody.getString("id");
 
             given().delete("/api/v1/courier/" + courierId);
