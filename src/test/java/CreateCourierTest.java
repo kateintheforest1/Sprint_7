@@ -1,14 +1,18 @@
+import com.google.gson.Gson;
 import io.restassured.RestAssured;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import java.io.File;
 import io.qameta.allure.junit4.DisplayName;
 import static org.hamcrest.Matchers.*;
 import static org.apache.http.HttpStatus.*;
 
 public class CreateCourierTest {
     CourierApi courierApi;
+    private String courierName = "ldld";
+    private String courierSecondName = "mkmk";
+    private String courierPassword = "1234";
+    private String courierFirstName = "saske";
 
     public CreateCourierTest() {
         this.courierApi = new CourierApi();
@@ -17,19 +21,39 @@ public class CreateCourierTest {
     @Before
     public void setUp() {
         RestAssured.baseURI = "http://qa-scooter.praktikum-services.ru";
-        courierApi.delete(new File("src/test/resources/newCourier.json"));
+        Courier courier = new Courier();
+        courier.setLogin(courierName);
+        courier.setPassword(courierPassword);
+        courier.setFirstName(courierFirstName);
+        courierApi.delete(courier);
     }
 
     @After
     public void cleanUp() {
-        courierApi.delete(new File("src/test/resources/newCourier.json"));
-        courierApi.delete(new File("src/test/resources/withoutNameCourier.json"));
+        Courier courier = new Courier();
+        courier.setLogin(courierName);
+        courier.setPassword(courierPassword);
+        courier.setFirstName(courierFirstName);
+
+        courierApi.delete(courier);
+
+        Courier courierWithoutName = new Courier();
+        courierWithoutName.setLogin(courierSecondName);
+        courierWithoutName.setPassword(courierPassword);
+
+        courierApi.delete(courierWithoutName);
     }
 
     @Test
     @DisplayName("Check courier creating")
     public void createNewCourierTest() {
-        courierApi.create(new File("src/test/resources/newCourier.json"))
+        Gson gson = new Gson();
+        Courier courier = new Courier();
+        courier.setLogin(courierName);
+        courier.setPassword(courierPassword);
+        courier.setFirstName(courierFirstName);
+
+        courierApi.create(gson.toJson(courier))
                 .then()
                 .statusCode(SC_CREATED);
     }
@@ -38,16 +62,25 @@ public class CreateCourierTest {
     @Test
     @DisplayName("Check twice creating the same courier")
     public void createTheSameCourierTest() {
-        File json = new File("src/test/resources/newCourier.json");
+        Gson gson = new Gson();
+        Courier courier = new Courier();
+        courier.setLogin(courierName);
+        courier.setPassword(courierPassword);
+        courier.setFirstName(courierFirstName);
 
-        courierApi.create(json).then().statusCode(SC_CREATED);
-        courierApi.create(json).then().assertThat().statusCode(SC_CONFLICT).and().body("message", equalTo("Этот логин уже используется. Попробуйте другой."));
+        courierApi.create(gson.toJson(courier)).then().statusCode(SC_CREATED);
+        courierApi.create(gson.toJson(courier)).then().assertThat().statusCode(SC_CONFLICT).and().body("message", equalTo("Этот логин уже используется. Попробуйте другой."));
     }
 
     @Test
     @DisplayName("Check creating courier without login")
     public void createCourierWithoutLoginTest() {
-        courierApi.create(new File("src/test/resources/withoutLoginCourier.json"))
+        Gson gson = new Gson();
+        Courier courier = new Courier();
+        courier.setPassword(courierPassword);
+        courier.setFirstName(courierFirstName);
+
+        courierApi.create(gson.toJson(courier))
                 .then()
                 .assertThat()
                 .statusCode(SC_BAD_REQUEST)
@@ -58,9 +91,12 @@ public class CreateCourierTest {
     @Test
     @DisplayName("Check creating courier without password")
     public void createCourierWithoutPasswordTest() {
-        File json = new File("src/test/resources/withoutPasswordCourier.json");
+        Gson gson = new Gson();
+        Courier courier = new Courier();
+        courier.setLogin(courierName);
+        courier.setFirstName(courierPassword);
 
-        courierApi.create(json)
+        courierApi.create(gson.toJson(courier))
                 .then()
                 .assertThat()
                 .statusCode(SC_BAD_REQUEST)
@@ -72,8 +108,11 @@ public class CreateCourierTest {
     @Test
     @DisplayName("Check creating courier without name")
     public void createCourierWithoutNameTest() {
-        File json = new File("src/test/resources/withoutNameCourier.json");
+        Gson gson = new Gson();
+        Courier courier = new Courier();
+        courier.setLogin(courierSecondName);
+        courier.setPassword(courierPassword);
 
-        courierApi.create(json).then().statusCode(SC_CREATED);
+        courierApi.create(gson.toJson(courier)).then().statusCode(SC_CREATED);
     }
 }

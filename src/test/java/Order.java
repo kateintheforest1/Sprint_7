@@ -14,5 +14,4 @@ public class Order {
     public Order(String[] color) {
         this.color = color;
     }
-
 }

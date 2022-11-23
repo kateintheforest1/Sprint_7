@@ -1,9 +1,8 @@
+import com.google.gson.Gson;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import static org.apache.http.HttpStatus.*;
-
-import java.io.File;
 
 import static io.restassured.RestAssured.given;
 
@@ -12,18 +11,20 @@ public class CourierApi {
         RestAssured.baseURI = "http://qa-scooter.praktikum-services.ru";
     }
 
-    public Response create(File json) {
+    public Response create(String json) {
         Response response = given().header("Content-type", "application/json").and().body(json).when().post("/api/v1/courier");
 
         return response;
     }
 
-    public void delete(File json) {
+    public void delete(Courier courier) {
+        Gson gson = new Gson();
+
         Response response0 =
                 given()
                         .header("Content-type", "application/json")
                         .and()
-                        .body(json)
+                        .body(gson.toJson(courier))
                         .when()
                         .post("/api/v1/courier/login");
 
@@ -36,11 +37,13 @@ public class CourierApi {
         }
     }
 
-    public Response login(File json) {
+    public Response login(Courier courier) {
+        Gson gson = new Gson();
+
         return given()
                 .header("Content-type", "application/json")
                 .and()
-                .body(json)
+                .body(gson.toJson(courier))
                 .when()
                 .post("/api/v1/courier/login");
     }
