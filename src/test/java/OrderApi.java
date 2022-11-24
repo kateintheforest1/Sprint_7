@@ -1,3 +1,4 @@
+import com.google.gson.Gson;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import static io.restassured.RestAssured.given;
@@ -7,11 +8,13 @@ public class OrderApi {
         RestAssured.baseURI = "http://qa-scooter.praktikum-services.ru";
     }
 
-    public Response create(String json) {
+    public Response create(Order order) {
+        Gson gson = new Gson();
+
         return given()
                 .header("Content-type", "application/json")
                 .and()
-                .body(json)
+                .body(gson.toJson(order))
                 .when()
                 .post("/api/v1/orders");
     }

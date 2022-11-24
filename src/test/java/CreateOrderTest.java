@@ -1,6 +1,4 @@
 import io.qameta.allure.Step;
-import io.restassured.RestAssured;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -11,10 +9,10 @@ import static org.apache.http.HttpStatus.*;
 @RunWith(Parameterized.class)
 public class CreateOrderTest {
 
-    private final String orderDataJson;
+    private final Order order;
 
-    public CreateOrderTest(String json) {
-        this.orderDataJson = json;
+    public CreateOrderTest(Order order) {
+        this.order = order;
     }
 
     @Parameterized.Parameters
@@ -28,16 +26,16 @@ public class CreateOrderTest {
 
         return new Object[][]{
             {
-                gson.toJson(new Order(blackColor))
+                new Order(blackColor)
             },
             {
-                gson.toJson(new Order(greyColor))
+                new Order(greyColor)
             },
             {
-                gson.toJson(new Order(bothColors))
+                new Order(bothColors)
             },
             {
-                gson.toJson(new Order(noColors))
+                new Order(noColors)
             }
         };
     }
@@ -48,6 +46,6 @@ public class CreateOrderTest {
     public void createOrder() {
         OrderApi api = new OrderApi();
 
-        api.create(this.orderDataJson).then().statusCode(SC_CREATED).and().extract().path("track");
+        api.create(this.order).then().statusCode(SC_CREATED).and().extract().path("track");
     }
 }
