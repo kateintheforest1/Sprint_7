@@ -27,7 +27,7 @@ public class LoginTest {
         courier.setLogin("ldld");
         courier.setPassword("1234");
         courier.setFirstName("saske");
-        courierApi.create(gson.toJson(courier));
+        courierApi.createCourier(gson.toJson(courier));
     }
 
     @After

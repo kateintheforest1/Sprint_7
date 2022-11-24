@@ -55,7 +55,7 @@ public class CreateCourierTest {
         courier.setPassword(courierPassword);
         courier.setFirstName(courierFirstName);
 
-        courierApi.create(gson.toJson(courier))
+        courierApi.createCourier(gson.toJson(courier))
                 .then()
                 .statusCode(SC_CREATED);
     }
@@ -72,8 +72,8 @@ public class CreateCourierTest {
         courier.setPassword(courierPassword);
         courier.setFirstName(courierFirstName);
 
-        courierApi.create(gson.toJson(courier)).then().statusCode(SC_CREATED);
-        courierApi.create(gson.toJson(courier)).then().assertThat().statusCode(SC_CONFLICT).and().body("message", equalTo("Этот логин уже используется. Попробуйте другой."));
+        courierApi.createCourier(gson.toJson(courier)).then().statusCode(SC_CREATED);
+        courierApi.createCourier(gson.toJson(courier)).then().assertThat().statusCode(SC_CONFLICT).and().body("message", equalTo("Этот логин уже используется. Попробуйте другой."));
     }
 
     @Test
@@ -85,7 +85,7 @@ public class CreateCourierTest {
         courier.setPassword(courierPassword);
         courier.setFirstName(courierFirstName);
 
-        courierApi.create(gson.toJson(courier))
+        courierApi.createCourier(gson.toJson(courier))
                 .then()
                 .assertThat()
                 .statusCode(SC_BAD_REQUEST)
@@ -102,7 +102,7 @@ public class CreateCourierTest {
         courier.setLogin(courierName);
         courier.setFirstName(courierPassword);
 
-        courierApi.create(gson.toJson(courier))
+        courierApi.createCourier(gson.toJson(courier))
                 .then()
                 .assertThat()
                 .statusCode(SC_BAD_REQUEST)
@@ -120,6 +120,6 @@ public class CreateCourierTest {
         courier.setLogin(courierSecondName);
         courier.setPassword(courierPassword);
 
-        courierApi.create(gson.toJson(courier)).then().statusCode(SC_CREATED);
+        courierApi.createCourier(gson.toJson(courier)).then().statusCode(SC_CREATED);
     }
 }
