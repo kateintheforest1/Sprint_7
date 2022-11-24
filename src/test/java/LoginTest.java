@@ -17,10 +17,6 @@ public class LoginTest {
     }
 
     @Before
-    public void setUp() {
-        RestAssured.baseURI = "http://qa-scooter.praktikum-services.ru";
-    }
-
     public void createNewCourier() {
         Gson gson = new Gson();
         Courier courier = new Courier();

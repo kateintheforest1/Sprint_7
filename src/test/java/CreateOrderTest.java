@@ -10,10 +10,7 @@ import static org.apache.http.HttpStatus.*;
 
 @RunWith(Parameterized.class)
 public class CreateOrderTest {
-    @Before
-    public void setUp() {
-        RestAssured.baseURI = "http://qa-scooter.praktikum-services.ru";
-    }
+
     private final String orderDataJson;
 
     public CreateOrderTest(String json) {

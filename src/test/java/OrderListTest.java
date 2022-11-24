@@ -6,11 +6,7 @@ import io.qameta.allure.junit4.DisplayName;
 import static org.hamcrest.Matchers.notNullValue;
 
 public class OrderListTest {
-    @Before
-    public void setUp() {
-        RestAssured.baseURI = "http://qa-scooter.praktikum-services.ru";
-    }
-
+   
     @Test
     @DisplayName("Check getting order list")
     @Step("Send GET request to /api/v1/orders and check response status")
