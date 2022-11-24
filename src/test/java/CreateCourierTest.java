@@ -48,13 +48,12 @@ public class CreateCourierTest {
     @DisplayName("Check courier creating")
     @Step("Send POST request to /api/v1/courier and check response status")
     public void createNewCourierTest() {
-        Gson gson = new Gson();
         Courier courier = new Courier();
         courier.setLogin(courierName);
         courier.setPassword(courierPassword);
         courier.setFirstName(courierFirstName);
 
-        courierApi.createCourier(gson.toJson(courier))
+        courierApi.createCourier(courier)
                 .then()
                 .statusCode(SC_CREATED);
     }
@@ -65,26 +64,24 @@ public class CreateCourierTest {
     @Step("Send the same POST request to /api/v1/courier twice and check response status")
 
     public void createTheSameCourierTest() {
-        Gson gson = new Gson();
         Courier courier = new Courier();
         courier.setLogin(courierName);
         courier.setPassword(courierPassword);
         courier.setFirstName(courierFirstName);
 
-        courierApi.createCourier(gson.toJson(courier)).then().statusCode(SC_CREATED);
-        courierApi.createCourier(gson.toJson(courier)).then().assertThat().statusCode(SC_CONFLICT).and().body("message", equalTo("Этот логин уже используется. Попробуйте другой."));
+        courierApi.createCourier(courier).then().statusCode(SC_CREATED);
+        courierApi.createCourier(courier).then().assertThat().statusCode(SC_CONFLICT).and().body("message", equalTo("Этот логин уже используется. Попробуйте другой."));
     }
 
     @Test
     @DisplayName("Check creating courier without login")
     @Step("Send POST request to /api/v1/courier without login and check response status")
     public void createCourierWithoutLoginTest() {
-        Gson gson = new Gson();
         Courier courier = new Courier();
         courier.setPassword(courierPassword);
         courier.setFirstName(courierFirstName);
 
-        courierApi.createCourier(gson.toJson(courier))
+        courierApi.createCourier(courier)
                 .then()
                 .assertThat()
                 .statusCode(SC_BAD_REQUEST)
@@ -96,12 +93,11 @@ public class CreateCourierTest {
     @DisplayName("Check creating courier without password")
     @Step("Send POST request to /api/v1/courier without password and check response status")
     public void createCourierWithoutPasswordTest() {
-        Gson gson = new Gson();
         Courier courier = new Courier();
         courier.setLogin(courierName);
         courier.setFirstName(courierPassword);
 
-        courierApi.createCourier(gson.toJson(courier))
+        courierApi.createCourier(courier)
                 .then()
                 .assertThat()
                 .statusCode(SC_BAD_REQUEST)
@@ -114,11 +110,10 @@ public class CreateCourierTest {
     @DisplayName("Check creating courier without name")
     @Step("Send POST request to /api/v1/courier without name and check response status")
     public void createCourierWithoutNameTest() {
-        Gson gson = new Gson();
         Courier courier = new Courier();
         courier.setLogin(courierSecondName);
         courier.setPassword(courierPassword);
 
-        courierApi.createCourier(gson.toJson(courier)).then().statusCode(SC_CREATED);
+        courierApi.createCourier(courier).then().statusCode(SC_CREATED);
     }
 }

@@ -1,4 +1,3 @@
-import com.google.gson.Gson;
 import io.qameta.allure.Step;
 import org.junit.*;
 import io.qameta.allure.junit4.DisplayName;
@@ -15,12 +14,12 @@ public class LoginTest {
 
     @Before
     public void createNewCourier() {
-        Gson gson = new Gson();
         Courier courier = new Courier();
         courier.setLogin("ldld");
         courier.setPassword("1234");
         courier.setFirstName("saske");
-        courierApi.createCourier(gson.toJson(courier));
+
+        courierApi.createCourier(courier);
     }
 
     @After

@@ -11,8 +11,9 @@ public class CourierApi {
         RestAssured.baseURI = "http://qa-scooter.praktikum-services.ru";
     }
 
-    public Response createCourier(String json) {
-        Response response = given().header("Content-type", "application/json").and().body(json).when().post("/api/v1/courier");
+    public Response createCourier(Courier courier) {
+        Gson gson = new Gson();
+        Response response = given().header("Content-type", "application/json").and().body(gson.toJson(courier)).when().post("/api/v1/courier");
 
         return response;
     }
