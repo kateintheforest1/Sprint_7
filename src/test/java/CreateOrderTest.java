@@ -1,3 +1,4 @@
+import io.qameta.allure.Step;
 import io.restassured.RestAssured;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,6 +47,7 @@ public class CreateOrderTest {
 
     @Test
     @DisplayName("Check order creating")
+    @Step("Send POST request to /api/v1/orders with black, grey, both and no colors and check response status in each case")
     public void createOrder() {
         OrderApi api = new OrderApi();
 

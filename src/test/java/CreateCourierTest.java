@@ -1,4 +1,5 @@
 import com.google.gson.Gson;
+import io.qameta.allure.Step;
 import io.restassured.RestAssured;
 import org.junit.After;
 import org.junit.Before;
@@ -46,6 +47,7 @@ public class CreateCourierTest {
 
     @Test
     @DisplayName("Check courier creating")
+    @Step("Send POST request to /api/v1/courier and check response status")
     public void createNewCourierTest() {
         Gson gson = new Gson();
         Courier courier = new Courier();
@@ -61,6 +63,8 @@ public class CreateCourierTest {
 
     @Test
     @DisplayName("Check twice creating the same courier")
+    @Step("Send the same POST request to /api/v1/courier twice and check response status")
+
     public void createTheSameCourierTest() {
         Gson gson = new Gson();
         Courier courier = new Courier();
@@ -74,6 +78,7 @@ public class CreateCourierTest {
 
     @Test
     @DisplayName("Check creating courier without login")
+    @Step("Send POST request to /api/v1/courier without login and check response status")
     public void createCourierWithoutLoginTest() {
         Gson gson = new Gson();
         Courier courier = new Courier();
@@ -90,6 +95,7 @@ public class CreateCourierTest {
 
     @Test
     @DisplayName("Check creating courier without password")
+    @Step("Send POST request to /api/v1/courier without password and check response status")
     public void createCourierWithoutPasswordTest() {
         Gson gson = new Gson();
         Courier courier = new Courier();
@@ -107,6 +113,7 @@ public class CreateCourierTest {
 
     @Test
     @DisplayName("Check creating courier without name")
+    @Step("Send POST request to /api/v1/courier without name and check response status")
     public void createCourierWithoutNameTest() {
         Gson gson = new Gson();
         Courier courier = new Courier();

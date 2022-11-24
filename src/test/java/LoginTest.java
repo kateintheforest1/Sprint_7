@@ -1,4 +1,5 @@
 import com.google.gson.Gson;
+import io.qameta.allure.Step;
 import io.restassured.RestAssured;
 import org.junit.After;
 import org.junit.Before;
@@ -40,6 +41,7 @@ public class LoginTest {
 
     @Test
     @DisplayName("Check login by courier")
+    @Step("Send POST request to /api/v1/courier/login and check response status")
     public void loginCourierTest() {
         createNewCourier();
 
@@ -58,6 +60,7 @@ public class LoginTest {
 
     @Test
     @DisplayName("Check login by courier without entering login")
+    @Step("Send POST request to /api/v1/courier/login without entering login and check response status")
     public void loginCourierWithoutLoginTest() {
         createNewCourier();
         Courier courier = new Courier();
@@ -69,6 +72,7 @@ public class LoginTest {
 
     @Test
     @DisplayName("Check login by courier without entering password")
+    @Step("Send POST request to /api/v1/courier/login without entering password and check response status")
     public void loginCourierWithoutPasswordTest() {
         createNewCourier();
         Courier courier = new Courier();
@@ -79,6 +83,7 @@ public class LoginTest {
 
     @Test
     @DisplayName("Check login by courier with incorrect login")
+    @Step("Send POST request to /api/v1/courier/login with entering incorrect login and check response status")
     public void loginCourierNotCorrectTest() {
         createNewCourier();
 
@@ -90,6 +95,7 @@ public class LoginTest {
 
     @Test
     @DisplayName("Check login by courier with incorrect password")
+    @Step("Send POST request to /api/v1/courier/login with entering incorrect password and check response status")
     public void loginCourierNotCorrectPasswordTest() {
         createNewCourier();
         Courier courier = new Courier();
